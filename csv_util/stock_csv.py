@@ -14,20 +14,9 @@ import pandas as pd
 from spider.stockDailySpider import stockDailySpider
 
 
-# 读测试数据
-def load_test_data():
-    row_stock_day_data = []
-    stock_day_file = './stock_day.txt'
-
-    with open(stock_day_file, mode='r', encoding='utf-8') as f:
-        for line in f:
-            row_stock_day_data.append(line.strip().split(','))
-
-    # print(row_stock_day_data)
-    return row_stock_day_data
-
-
 # 预处理股票日数据
+# 输入一个list
+# 返回一个list
 def pre_processing_data(row_data=None):
     if not row_data:
         return
@@ -50,16 +39,20 @@ def pre_processing_data(row_data=None):
 
 
 # 将股票日数据存入csv文件
+# 输入list数据, 标签list, 字符串股票名
+# 无返回值
 def save_data_in_csv(all_data=None, tag=None, stock_name=None):
     if not all_data or not tag or not stock_name:
         return
 
-    csv_file = './%s.csv' % (stock_name)
+    csv_file = '../csv_data/%s.csv' % stock_name
     df = DataFrame(data=all_data, columns=tag)
     df.to_csv(path_or_buf=csv_file, encoding='utf-8', index_label=False)
 
 
-# 从csv文件读出股票日数据，并返回一个字典
+# 从csv文件读出股票日数据
+# 输入文件名
+# 返回一个字典
 def load_from_csv(csv_file=None):
     if not csv_file:
         return
@@ -72,7 +65,6 @@ def load_from_csv(csv_file=None):
 
 # 测试
 if __name__ == '__main__':
-    csv_day_file = './stock_day_data.csv'
     day_tag = ['日期', '收盘价', '涨跌幅']
 
     spider = stockDailySpider()
@@ -80,5 +72,6 @@ if __name__ == '__main__':
     day_data = pre_processing_data(row_day_data)
     save_data_in_csv(day_data, day_tag, stock_name)
     data = load_from_csv(stock_name + '.csv')
+
 
 
