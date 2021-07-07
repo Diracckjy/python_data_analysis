@@ -1,62 +1,64 @@
+import json
 import re
 import pymysql
 
 import requests
-from lxml import etree
 from tqdm import tqdm
 
 
 class stockCodeSpider():
     def __init__(self):
-        self.url = 'http://quote.eastmoney.com/usstocklist.html'
+        self.url = 'https://21.push2.eastmoney.com/api/qt/clist/get?pz=20&po=1&np=1&ut=bd1d9ddb04089700cf9c27f6f7426281&fltt=2&invt=2&fid=f3&fs=m:1+t:23&fields=f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f12,f13,f14,f15,f16,f17,f18,f20,f21,f23,f24,f25,f22,f11,f62,f128,f136,f115,f152&pn='
         self.rec = 0
+        self.suburl = 'http://quote.eastmoney.com/kcb/%s.html'
+        self.conn = None
 
     def run(self):
-        self.parseMainPage()
+        self.conn = pymysql.connect(user='spiderDemo', password='111111', host='42.193.38.14', database='spiders',
+                                    port=3306,
+                                    charset='utf8')
+        list = self.parseMainPage()
+        dataList = []
+        for i in tqdm(list):
+            data = self.subParse(i)
+            if data is not None:
+                dataList.append(data)
+            if len(dataList) == 100:
+                self.saveToDB(dataList)
+                dataList = []
+        self.saveToDB(dataList)
+        self.conn.close()
 
     def parseMainPage(self):
-        resp = requests.get(self.url)
-        resp.encoding = resp.apparent_encoding
-        html = etree.HTML(resp.text)
-        urlLists = html.xpath('//div[@id="quotesearch"]/ul/li/a/@href')
-        print(len(urlLists))
         list = []
-        cnt = 1
-        for url in tqdm(urlLists):
-            data = self.subParse(url)
-            if data is not None:
-                list.append(data)
-
-            if cnt % 200 == 0:
-                self.saveToDB(list)
-                print('checkpoint!')
-                list = []
-            cnt = cnt + 1
-            # time.sleep(0.1)
-        self.saveToDB(list)
+        for i in range(1, 17):
+            resp = requests.get(self.url + str(i))
+            resp = json.loads(resp.text)
+            for item in resp['data']['diff']:
+                url = self.suburl % item['f12']
+                list.append(url)
+        return list
 
     def subParse(self, url):
         resp = requests.get(url)
-        resp.encoding = resp.apparent_encoding
         if resp.status_code == 200:
             resp.encoding = resp.apparent_encoding
-            name = re.findall('.*?quote_title_0 wryh">(.*?)</span>', resp.text)[0]
-            secid = re.findall('.*?stockEnity.*?UnifiedID:"(.*?)"', resp.text, re.S)[0]
+            res = re.findall(".*?stockEnity.*?UnifiedId:  '(.*?)'.*?Code: '(.*?)'.*?Name: '(.*?)'", resp.text, re.S)[0]
+            secid = res[0]
+            code = res[1]
+            name = res[2]
             self.rec = self.rec + 1
-            return str(self.rec), name, secid
+            return str(self.rec), name, secid, code
         else:
             return None
 
     def saveToDB(self, list):
-        conn = pymysql.connect(user='root', password='raymond', host='localhost', database='spiders', port=3306,
-                               charset='utf8')
-        cur = conn.cursor()
+        cur = self.conn.cursor()
         for data in list:
-            sql = 'INSERT INTO spiders.stockinfo(id, name, secid) VALUES(%s, %s, %s)'
+            sql = 'INSERT INTO spiders.stockinfo(id, name, secid, stockNum) VALUES(%s, %s, %s, %s)'
             cur.execute(sql, data)
-        conn.commit()
+        self.conn.commit()
         cur.close()
-        conn.close()
 
 
 def main():
