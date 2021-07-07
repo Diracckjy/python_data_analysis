@@ -18,13 +18,12 @@ def pre_processing_stock(row_data=None):
 
     all_data=[]
     for item in row_data:
-        # print(item.split(' '))
-        data1 = []
+        data = []
         data_list = item.split(' ')
-        data1.append(data_list[0])
-        data1 += data_list[1].split(',')
+        data.append(data_list[0])
+        data += data_list[1].split(',')
 
-        all_data.append(data1)
+        all_data.append(data)
 
     return all_data
 
