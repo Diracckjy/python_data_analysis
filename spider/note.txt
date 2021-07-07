@@ -1,0 +1,7 @@
+股票api
+https://push2his.eastmoney.com/api/qt/stock/trends2/sse?fields1=f1&fields2=f53&secid=105.BILI&ndays=5
+
+股票代码
+http://quote.eastmoney.com/usstocklist.html
+
+secid - > http://np-anotice-stock.eastmoney.com/api/security/ann?cb=jQuery112406881429845246325_1625623256355&page_size=5&page_index=1&market_code=106&stock_list=A&client_source=web&_=1625623256356 -> market_code -> var stockEnity (js)
