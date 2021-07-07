@@ -4,7 +4,7 @@ def get_conn():
     conn = pymysql.connect(host='localhost', port=3306, user='root', passwd='123456', db='test')
     return conn
 
-def query(sql,args):
+def search(sql,args):
     conn = get_conn()
     cur = conn.cursor()
     cur.execute(sql,args)
@@ -27,4 +27,4 @@ def query(sql,args):
 
 if __name__ == '__main__':
     sql = 'SELECT  * FROM kg_python_user;'
-    query(sql,None)
+    search(sql,None)
