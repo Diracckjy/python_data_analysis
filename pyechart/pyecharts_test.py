@@ -10,29 +10,25 @@ from csv_util import stock_csv
 dict_x = []
 dict_y1 = []
 dict_y2 = []
-
-def fake_fun():
-    print(Faker.choose());
-    print(Faker.values(1, 100));
-    print(Faker.rand_color());
-    print(list(z for z in zip(Faker.choose(), Faker.values(1, 100))));
-    print(list((x, y, random.randint(1, 100)) for x in range(1, 10) for y in range(1, 10)));
-
+dict_pie1 = []
+dict_pie2 = []
 
 def line_fun():
     c = (
         Line().add_xaxis(dict_x
                          ).add_yaxis(
 
-            "线1", Faker.values(1, 100), itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color()),
-            markpoint_opts=opts.MarkPointOpts(data=[opts.MarkPointItem(type_="max")])
+            "收盘价", dict_y1, itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color()),
+            markpoint_opts=opts.MarkPointOpts(data=[opts.MarkPointItem(type_="max")]),
+            areastyle_opts=opts.AreaStyleOpts(opacity=0.5)
         ).add_yaxis(
 
-            "线2", Faker.values(1, 100), itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color()),
-            markpoint_opts=opts.MarkPointOpts(data=[opts.MarkPointItem(type_="max")])
+            "涨跌幅",dict_y2, itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color()),
+            markpoint_opts=opts.MarkPointOpts(data=[opts.MarkPointItem(type_="max")]),
+            areastyle_opts=opts.AreaStyleOpts(opacity=0.5)
         ).set_global_opts(
-
-            title_opts=opts.TitleOpts(title="stock", subtitle="linemap")
+            datazoom_opts=[opts.DataZoomOpts(type_="inside")],
+            title_opts=opts.TitleOpts(title="线状图", subtitle="公司股票分析")
         )
 
     )
@@ -44,13 +40,13 @@ def bar_fun():
         Bar({"theme": ThemeType.MACARONS}).add_xaxis(dict_x
                                                      ).add_yaxis(
             # 添加 y 轴数据，并设置属性
-            "柱1", dict["日期"], itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color())
+            "收盘价", dict_y1, itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color())
         ).add_yaxis(
             # 添加 y 轴数据，并设置属性
-            "柱2", Faker.values(1, 100), itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color())
+            "涨跌幅", dict_y2, itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color())
         ).set_global_opts(
             # 设置图表属性
-            title_opts=opts.TitleOpts(title="主标题", subtitle="副标题"),
+            title_opts=opts.TitleOpts(title="柱状图", subtitle="公司股票分析"),
             datazoom_opts=[opts.DataZoomOpts()],
         )
     )
@@ -59,7 +55,7 @@ def bar_fun():
 
 def pie_fun():
     # 数据格式[(key, value), (key, value), ...], 用 zip 函数将两个 list 进行组合
-    data = [list(z) for z in zip(Faker.choose(), Faker.values())];
+    data = [list(z) for z in zip(dict_pie1, dict_pie2)];
     c = (
         Pie().add(
             series_name="",
@@ -67,7 +63,7 @@ def pie_fun():
             rosetype="radius",
         ).set_global_opts(
             # 设置图表属性
-            title_opts=opts.TitleOpts(title="主标题", subtitle="副标题")
+            title_opts=opts.TitleOpts(title="饼状图", subtitle="公司股票分析")
         ).set_series_opts(
             # 设置 label 显示样式
             label_opts=opts.LabelOpts(
@@ -81,25 +77,25 @@ def pie_fun():
 
 def grid_mutil_yaxis():
     bar = (
-        Bar()
+        Bar(init_opts=opts.InitOpts(width="1680px", height="800px"))
             .add_xaxis(dict_x)
             .add_yaxis(
             "收盘价",
             dict_y1, category_gap="0%", itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color()),
-            yaxis_index=0,
+            yaxis_index=1,
         )
             .add_yaxis(
             "涨跌幅",
             dict_y2, category_gap="0%", itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color()),
-            yaxis_index=0,
+            yaxis_index=2,
         )
             .extend_axis(
             yaxis=opts.AxisOpts(
                 name="收盘价",
                 type_="value",
-                min_=-300,
-                max_=300,
                 position="right",
+                max_=270,
+                min_=-200,
                 axisline_opts=opts.AxisLineOpts(
                     linestyle_opts=opts.LineStyleOpts(color=Faker.rand_color())
                 ),
@@ -110,10 +106,10 @@ def grid_mutil_yaxis():
             yaxis=opts.AxisOpts(
                 name="涨跌幅",
                 type_="value",
-                min_=-300,
-                max_=300,
                 position="right",
                 offset=80,
+                max_=20,
+                min_=-20,
                 axisline_opts=opts.AxisLineOpts(
                     linestyle_opts=opts.LineStyleOpts(color=Faker.rand_color())
                 ),
@@ -137,11 +133,12 @@ def grid_mutil_yaxis():
         Line()
             .add_xaxis(dict_x)
             .add_yaxis(
-            "收盘价趋势",
+            "跌涨幅趋势",
             dict_y1, itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color()),
             markpoint_opts=opts.MarkPointOpts(data=[opts.MarkPointItem(type_="min"), opts.MarkPointItem(type_="max")]),
             yaxis_index=0,
             label_opts=opts.LabelOpts(is_show=False),
+
         )
     )
 
@@ -245,8 +242,11 @@ def tab_fun():
 
 
 if __name__ == "__main__":
-    dict = stock_csv.load_from_csv("三孚新科.csv")
+    dict = stock_csv.load_from_csv("../csv_data/三孚新科.csv")
+    dict2 = stock_csv.load_date_from_csv("2021-07-07")
     dict_x = dict["日期"]
     dict_y1 = dict["收盘价"]
     dict_y2 = dict["涨跌幅"]
+    dict_pie1 = dict2[0]
+    dict_pie2 = dict2[1]
     tab_fun()

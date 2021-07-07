@@ -88,19 +88,19 @@ def load_date_from_csv(date=None):
 # 测试
 if __name__ == '__main__':
     day_tag = ['日期', '收盘价', '涨跌幅']
-    date = '2021-07-07'
+    #date = '2021-07-07'
 
-    # spider = stockDailySpider()
+    spider = stockDailySpider()
     # # 爬取数据
-    # stock_name, row_day_data = spider.run()
+    stock_name, row_day_data = spider.run()
     # # 数据预处理
-    # day_data = pre_processing_data(row_day_data)
+    day_data = pre_processing_data(row_day_data)
     # # 将数据存入csv文件
-    # save_data_in_csv(day_data, day_tag, stock_name)
+    save_data_in_csv(day_data, day_tag, stock_name)
     # # 从csv文件读出数据
-    # data = load_from_csv(stock_name + '.csv')
+    data = load_from_csv(stock_name + '.csv')
 
-    load_date_from_csv(date)
+    #load_date_from_csv(date)
 
 
 
