@@ -1,13 +1,10 @@
-﻿import csv
-import glob
+﻿import glob
 import random;
 from pyecharts.faker import Faker;
 from pyecharts import options as opts;
-from pyecharts.charts import Bar, Grid, Line, Liquid, Tab, Pie
+from pyecharts.charts import Bar, Grid, Line, Liquid, Tab, Pie,Kline
 from pyecharts.globals import SymbolType
-import numpy as np
-import pandas as pd
-import csv_util
+from pyecharts.globals import ThemeType
 
 filename = 'covid.csv'
 all_files = glob.glob(filename)
@@ -47,7 +44,7 @@ def line_fun():
 
 def bar_fun():
     c = (
-        Bar().add_xaxis(cate
+        Bar({"theme": ThemeType.MACARONS}).add_xaxis(cate
                         ).add_yaxis(
             # 添加 y 轴数据，并设置属性
             "柱1", Faker.values(1, 100), itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color())
@@ -93,13 +90,11 @@ def grid_mutil_yaxis():
             "score",
             Faker.values(-300, 300), itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color()),
             yaxis_index=0,
-            label_opts="inside"
         )
             .add_yaxis(
             "sub-score",
             Faker.values(-300, 300), itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color()),
-            yaxis_index=1,
-            label_opts="inside"
+            yaxis_index=0,
         )
             .extend_axis(
             yaxis=opts.AxisOpts(
@@ -134,7 +129,7 @@ def grid_mutil_yaxis():
             .set_global_opts(
             title_opts=opts.TitleOpts(title="Grid-多 Y 轴示例"),
             tooltip_opts=opts.TooltipOpts(trigger="axis", axis_pointer_type="cross"),
-            datazoom_opts=[opts.DataZoomOpts()],
+            datazoom_opts=[opts.DataZoomOpts()],toolbox_opts=opts.ToolboxOpts(pos_left="820"),
         )
     )
 
@@ -216,7 +211,24 @@ def dataset_fun():
     )
     return c
 
-
+def kmap_fun():
+    c = (
+        Kline()
+            .add_xaxis(["2017/7/{}".format(i + 1) for i in range(31)])
+            .add_yaxis("kline",)
+            .set_global_opts(
+            xaxis_opts=opts.AxisOpts(is_scale=True),
+            yaxis_opts=opts.AxisOpts(
+                is_scale=True,
+                splitarea_opts=opts.SplitAreaOpts(
+                    is_show=True, areastyle_opts=opts.AreaStyleOpts(opacity=1)
+                ),
+            ),
+            datazoom_opts=[opts.DataZoomOpts()],
+            title_opts=opts.TitleOpts(title="Kline-DataZoom-slider"),
+        )
+    )
+    return c
 def tab_fun():
     tab = Tab()
     tab.add(bar_fun(), "bar")
@@ -225,15 +237,10 @@ def tab_fun():
     tab.add(grid_mutil_yaxis(), "grid")
     tab.add(dataset_fun(),"dataset")
     tab.add(liquid_fun(),"liquidmap")
+    #tab.add(kmap_fun(),"k-line")
     tab.render("C:/Users/Administrator/Desktop/temp/tab.html")
 
 
 if __name__ == "__main__":
-    # fake_fun();
-    # line_fun()
-    # bar_fun()
-    # pie_fun();
-    # liquid_fun()
-    # dataset_fun()
-    # grid_mutil_yaxis()
     tab_fun()
+
