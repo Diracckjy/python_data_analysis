@@ -11,7 +11,7 @@ __author__ = "Shishao_Zhao"
 
 from pandas import DataFrame
 import pandas as pd
-from spider.stockInfoSpider import stockInfoSpier
+from spider.stockDailySpider import stockDailySpider
 
 
 # 读测试数据
@@ -75,7 +75,7 @@ if __name__ == '__main__':
     csv_day_file = './stock_day_data.csv'
     day_tag = ['日期', '收盘价', '涨跌幅']
 
-    spider = stockInfoSpier()
+    spider = stockDailySpider()
     stock_name, row_day_data = spider.run()
     day_data = pre_processing_data(row_day_data)
     save_data_in_csv(day_data, day_tag, stock_name)
