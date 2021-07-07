@@ -43,18 +43,19 @@ class stockCodeSpider():
         resp = requests.get(url)
         if resp.status_code == 200:
             resp.encoding = resp.apparent_encoding
-            res = re.findall(".*?stockEnity.*?UnifiedId:  '(.*?)'.*?Name: '(.*?)'", resp.text, re.S)[0]
-            name = res[1]
+            res = re.findall(".*?stockEnity.*?UnifiedId:  '(.*?)'.*?Code: '(.*?)'.*?Name: '(.*?)'", resp.text, re.S)[0]
             secid = res[0]
+            code = res[1]
+            name = res[2]
             self.rec = self.rec + 1
-            return str(self.rec), name, secid
+            return str(self.rec), name, secid, code
         else:
             return None
 
     def saveToDB(self, list):
         cur = self.conn.cursor()
         for data in list:
-            sql = 'INSERT INTO spiders.stockinfo(id, name, secid) VALUES(%s, %s, %s)'
+            sql = 'INSERT INTO spiders.stockinfo(id, name, secid, stockNum) VALUES(%s, %s, %s, %s)'
             cur.execute(sql, data)
         self.conn.commit()
         cur.close()
