@@ -9,7 +9,7 @@ class stockInfoSpier():
         secid = self.getSecid(self.name)
 
     def getSecid(self, name):
-        conn = pymysql.connect(host='localhost', port=3306, user='root', passwd='raymond', db='spiders')
+        conn = pymysql.connect(host='42.193.38.14', port=3306, user='spiderDemo', passwd='111111', db='spiders')
         cur = conn.cursor()
         sql = 'SELECT secid FROM stockinfo WHERE name = %s'
         cur.execute(sql, (name))
