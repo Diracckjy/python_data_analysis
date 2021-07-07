@@ -2,7 +2,7 @@
 import random;
 from pyecharts.faker import Faker;
 from pyecharts import options as opts;
-from pyecharts.charts import Bar, Grid, Line, Liquid, Tab, Pie,Kline
+from pyecharts.charts import Bar, Grid, Line, Liquid, Tab, Pie, Kline
 from pyecharts.globals import SymbolType
 from pyecharts.globals import ThemeType
 
@@ -45,7 +45,7 @@ def line_fun():
 def bar_fun():
     c = (
         Bar({"theme": ThemeType.MACARONS}).add_xaxis(cate
-                        ).add_yaxis(
+                                                     ).add_yaxis(
             # 添加 y 轴数据，并设置属性
             "柱1", Faker.values(1, 100), itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color())
         ).add_yaxis(
@@ -65,19 +65,19 @@ def pie_fun():
     data = [list(z) for z in zip(Faker.choose(), Faker.values())];
     c = (
         Pie().add(
-                 series_name="",
-                 data_pair=data,
-                 rosetype="radius",
+            series_name="",
+            data_pair=data,
+            rosetype="radius",
         ).set_global_opts(
-        # 设置图表属性
-                title_opts=opts.TitleOpts(title="主标题", subtitle="副标题")
+            # 设置图表属性
+            title_opts=opts.TitleOpts(title="主标题", subtitle="副标题")
         ).set_series_opts(
-        # 设置 label 显示样式
-                label_opts=opts.LabelOpts(
+            # 设置 label 显示样式
+            label_opts=opts.LabelOpts(
                 formatter="{b}: {c}",
                 color=Faker.rand_color(),
+            )
         )
-      )
     )
     return c
 
@@ -88,12 +88,12 @@ def grid_mutil_yaxis():
             .add_xaxis(cate)
             .add_yaxis(
             "score",
-            Faker.values(-300, 300), itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color()),
+            Faker.values(-300, 300),  category_gap="0%",itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color()),
             yaxis_index=0,
         )
             .add_yaxis(
             "sub-score",
-            Faker.values(-300, 300), itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color()),
+            Faker.values(-300, 300),  category_gap="0%",itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color()),
             yaxis_index=0,
         )
             .extend_axis(
@@ -129,8 +129,10 @@ def grid_mutil_yaxis():
             .set_global_opts(
             title_opts=opts.TitleOpts(title="Grid-多 Y 轴示例"),
             tooltip_opts=opts.TooltipOpts(trigger="axis", axis_pointer_type="cross"),
-            datazoom_opts=[opts.DataZoomOpts()],toolbox_opts=opts.ToolboxOpts(pos_left="820"),
+            datazoom_opts=[opts.DataZoomOpts(),opts.DataZoomOpts(orient="vertical")], toolbox_opts=opts.ToolboxOpts(pos_left="820"),
+
         )
+
     )
 
     line = (
@@ -148,7 +150,7 @@ def grid_mutil_yaxis():
     bar.overlap(line)
     return Grid().add(
         bar, opts.GridOpts(pos_left="5%", pos_right="20%"), is_control_axis_index=True
-        )
+    )
 
 
 def liquid_fun():
@@ -211,11 +213,12 @@ def dataset_fun():
     )
     return c
 
+
 def kmap_fun():
     c = (
         Kline()
             .add_xaxis(["2017/7/{}".format(i + 1) for i in range(31)])
-            .add_yaxis("kline",)
+            .add_yaxis("kline", )
             .set_global_opts(
             xaxis_opts=opts.AxisOpts(is_scale=True),
             yaxis_opts=opts.AxisOpts(
@@ -229,18 +232,19 @@ def kmap_fun():
         )
     )
     return c
+
+
 def tab_fun():
     tab = Tab()
     tab.add(bar_fun(), "bar")
     tab.add(line_fun(), "line")
     tab.add(pie_fun(), "pie")
     tab.add(grid_mutil_yaxis(), "grid")
-    tab.add(dataset_fun(),"dataset")
-    tab.add(liquid_fun(),"liquidmap")
-    #tab.add(kmap_fun(),"k-line")
+    tab.add(dataset_fun(), "dataset")
+    tab.add(liquid_fun(), "liquidmap")
+    # tab.add(kmap_fun(),"k-line")
     tab.render("C:/Users/Administrator/Desktop/temp/tab.html")
 
 
 if __name__ == "__main__":
     tab_fun()
-
