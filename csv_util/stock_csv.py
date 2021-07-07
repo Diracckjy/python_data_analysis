@@ -12,6 +12,7 @@ __author__ = "Shishao_Zhao"
 from pandas import DataFrame
 import pandas as pd
 from spider.stockDailySpider import stockDailySpider
+from os import listdir
 
 
 # 预处理股票日数据
@@ -63,15 +64,43 @@ def load_from_csv(csv_file=None):
     return data
 
 
+# 按日期取出csv_data文件夹中所有公司改日股票数据
+# 输入日期格式YYYY-MM-DD
+# 返回两个list，一个公司名称list，一个收盘价list
+def load_date_from_csv(date=None):
+    if not date:
+        return
+    files = listdir('../csv_data')      # 列出文件夹中所有文件
+    cop_list, price_list = [], []
+    for file in files:
+        # print(file.split('.'))
+        cop_list.append(file.split('.')[0])
+        csv_data = pd.read_csv('../csv_data/'+file, index_col=0)
+        l = csv_data.values.tolist()
+        for item in l:
+            if date in item:
+                price_list.append(item[1])       # 取出收盘价
+                break       # 查询下一个item
+
+    return cop_list, price_list
+
+
 # 测试
 if __name__ == '__main__':
     day_tag = ['日期', '收盘价', '涨跌幅']
+    date = '2021-07-07'
 
-    spider = stockDailySpider()
-    stock_name, row_day_data = spider.run()
-    day_data = pre_processing_data(row_day_data)
-    save_data_in_csv(day_data, day_tag, stock_name)
-    data = load_from_csv(stock_name + '.csv')
+    # spider = stockDailySpider()
+    # # 爬取数据
+    # stock_name, row_day_data = spider.run()
+    # # 数据预处理
+    # day_data = pre_processing_data(row_day_data)
+    # # 将数据存入csv文件
+    # save_data_in_csv(day_data, day_tag, stock_name)
+    # # 从csv文件读出数据
+    # data = load_from_csv(stock_name + '.csv')
+
+    load_date_from_csv(date)
 
 
 
