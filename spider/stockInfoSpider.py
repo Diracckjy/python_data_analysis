@@ -3,6 +3,7 @@ import json
 import pymysql
 import requests
 
+
 # 当虹科技
 class stockInfoSpier():
     def __init__(self, name):
@@ -16,18 +17,20 @@ class stockInfoSpier():
         secid = self.getSecid(self.name)
         if secid is None:
             print('没有该公司数据')
+            return None
         else:
             print('该公司secid为：' + str(secid[0]))
-            self.parse(secid[0])
+            return self.parse(secid[0])
 
     def parse(self, secid):
         self.url = self.url + str(secid)
-        print(self.url)
+        list = []
         resp = requests.get(self.url, headers=self.headers)
         if resp.status_code == 200:
             items = json.loads(resp.text)
             for item in items['data']['klines']:
-                print(item)
+                list.append(item)
+        return list
 
     def getSecid(self, name):
         conn = pymysql.connect(host='42.193.38.14', port=3306, user='spiderDemo', passwd='111111', db='spiders')

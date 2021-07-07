@@ -3,7 +3,6 @@ import re
 import pymysql
 
 import requests
-from lxml import etree
 from tqdm import tqdm
 
 
