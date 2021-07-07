@@ -1,8 +1,6 @@
 import re
-import time
 import pymysql
 
-import lxml.html
 import requests
 from lxml import etree
 from tqdm import tqdm
