@@ -5,14 +5,11 @@ from pyecharts import options as opts;
 from pyecharts.charts import Bar, Grid, Line, Liquid, Tab, Pie, Kline
 from pyecharts.globals import SymbolType
 from pyecharts.globals import ThemeType
+from csv_util import stock_csv
 
-filename = 'covid.csv'
-all_files = glob.glob(filename)
-all_data_file = []
-
-cate = ["test preparation course", "math score", "reading score", "writing score", "sports score", "singing score",
-        "sl score"]
-
+dict_x = []
+dict_y1 = []
+dict_y2 = []
 
 def fake_fun():
     print(Faker.choose());
@@ -24,7 +21,7 @@ def fake_fun():
 
 def line_fun():
     c = (
-        Line().add_xaxis(cate
+        Line().add_xaxis(dict_x
                          ).add_yaxis(
 
             "线1", Faker.values(1, 100), itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color()),
@@ -44,10 +41,10 @@ def line_fun():
 
 def bar_fun():
     c = (
-        Bar({"theme": ThemeType.MACARONS}).add_xaxis(cate
+        Bar({"theme": ThemeType.MACARONS}).add_xaxis(dict_x
                                                      ).add_yaxis(
             # 添加 y 轴数据，并设置属性
-            "柱1", Faker.values(1, 100), itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color())
+            "柱1", dict["日期"], itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color())
         ).add_yaxis(
             # 添加 y 轴数据，并设置属性
             "柱2", Faker.values(1, 100), itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color())
@@ -85,20 +82,20 @@ def pie_fun():
 def grid_mutil_yaxis():
     bar = (
         Bar()
-            .add_xaxis(cate)
+            .add_xaxis(dict_x)
             .add_yaxis(
-            "score",
-            Faker.values(-300, 300),  category_gap="0%",itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color()),
+            "收盘价",
+            dict_y1, category_gap="0%", itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color()),
             yaxis_index=0,
         )
             .add_yaxis(
-            "sub-score",
-            Faker.values(-300, 300),  category_gap="0%",itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color()),
+            "涨跌幅",
+            dict_y2, category_gap="0%", itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color()),
             yaxis_index=0,
         )
             .extend_axis(
             yaxis=opts.AxisOpts(
-                name="score",
+                name="收盘价",
                 type_="value",
                 min_=-300,
                 max_=300,
@@ -111,7 +108,7 @@ def grid_mutil_yaxis():
         )
             .extend_axis(
             yaxis=opts.AxisOpts(
-                name="sub-score",
+                name="涨跌幅",
                 type_="value",
                 min_=-300,
                 max_=300,
@@ -127,9 +124,10 @@ def grid_mutil_yaxis():
             )
         )
             .set_global_opts(
-            title_opts=opts.TitleOpts(title="Grid-多 Y 轴示例"),
+            title_opts=opts.TitleOpts(title="Grid综合图-三孚新科当日股票走势"),
             tooltip_opts=opts.TooltipOpts(trigger="axis", axis_pointer_type="cross"),
-            datazoom_opts=[opts.DataZoomOpts(),opts.DataZoomOpts(orient="vertical")], toolbox_opts=opts.ToolboxOpts(pos_left="820"),
+            datazoom_opts=[opts.DataZoomOpts(), opts.DataZoomOpts(orient="vertical")],
+            toolbox_opts=opts.ToolboxOpts(pos_left="820"),
 
         )
 
@@ -137,12 +135,12 @@ def grid_mutil_yaxis():
 
     line = (
         Line()
-            .add_xaxis(cate)
+            .add_xaxis(dict_x)
             .add_yaxis(
-            "avarage-score",
-            Faker.values(1, 10), itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color()),
+            "收盘价趋势",
+            dict_y1, itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color()),
             markpoint_opts=opts.MarkPointOpts(data=[opts.MarkPointItem(type_="min"), opts.MarkPointItem(type_="max")]),
-            yaxis_index=2,
+            yaxis_index=0,
             label_opts=opts.LabelOpts(is_show=False),
         )
     )
@@ -247,4 +245,8 @@ def tab_fun():
 
 
 if __name__ == "__main__":
+    dict = stock_csv.load_from_csv("三孚新科.csv")
+    dict_x = dict["日期"]
+    dict_y1 = dict["收盘价"]
+    dict_y2 = dict["涨跌幅"]
     tab_fun()
