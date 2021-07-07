@@ -4,7 +4,6 @@ import pymysql
 import requests
 
 
-# 当虹科技
 class stockDailySpider():
     def __init__(self):
         self.name = input("请输入要爬取的公司名称：")
@@ -44,7 +43,6 @@ class stockDailySpider():
 def main():
     spider = stockDailySpider()
     spider.run()
-
 
 
 if __name__ == '__main__':
