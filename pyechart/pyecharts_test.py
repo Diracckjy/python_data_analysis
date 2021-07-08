@@ -1,9 +1,7 @@
-﻿import glob
-import random;
+﻿
 from pyecharts.faker import Faker;
 from pyecharts import options as opts;
-from pyecharts.charts import Bar, Grid, Line, Liquid, Tab, Pie, Kline, Timeline
-from pyecharts.globals import SymbolType
+from pyecharts.charts import Bar, Grid, Line, Tab, Pie, Timeline
 from pyecharts.globals import ThemeType
 from csv_util import stock_csv
 
@@ -11,10 +9,19 @@ dict_x = []
 dict_y1 = []
 dict_y2 = []
 dict2 = []
+dict3 = []
+dict4 = []
+dict5 = []
 dict_pie1 = []
 dict_pie2 = []
+dict_pie3 = []
+dict_pie4 = []
+dict_pie5 = []
+dict_pie6 = []
+dict_pie7 = []
+dict_pie8 = []
 
-
+tl = Timeline()
 
 def line_bar_fun():
     c = (
@@ -58,19 +65,62 @@ def line_bar_fun():
 
 
 def pie_fun():
-    # 数据格式[(key, value), (key, value), ...], 用 zip 函数将两个 list 进行组合
-        data = [list(z) for z in zip(dict_pie1, dict_pie2)]
-        c = (
+        # 数据格式[(key, value), (key, value), ...], 用 zip 函数将两个 list 进行组合
+        data1 = [list(z) for z in zip(dict_pie1, dict_pie2)]
+        data2 = [list(z) for z in zip(dict_pie3, dict_pie4)]
+        data3 = [list(z) for z in zip(dict_pie5, dict_pie6)]
+        data4 = [list(z) for z in zip(dict_pie7, dict_pie8)]
+        pie1 = (
+                Pie()
+                    .add(
+                    "",
+                    data1,
+                    rosetype="radius",
+                    radius=["50%", "70%"],
+                    label_opts=opts.LabelOpts(is_show=False, position="center"),
+                ).set_global_opts(
+                    # 设置图表属性
+                    title_opts=opts.TitleOpts(title="饼状图", subtitle="公司01日股票分析"),
+                    legend_opts=opts.LegendOpts(type_="scroll", pos_left="80%", orient="vertical"),
+                ).set_series_opts(
+                    # 设置 label 显示样式
+                    label_opts=opts.LabelOpts(
+                        formatter="{b}: {c}",
+                        color=Faker.rand_color(),
+                    )
+                )
+            )
+        pie2 = (
+                         Pie()
+                     .add(
+                    "",
+                    data2,
+                    rosetype="radius",
+                    radius=["50%", "70%"],
+                    label_opts=opts.LabelOpts(is_show=False, position="center"),
+                     ).set_global_opts(
+                     # 设置图表属性
+                    title_opts=opts.TitleOpts(title="饼状图", subtitle="公司01日股票分析"),
+                    legend_opts=opts.LegendOpts(type_="scroll", pos_left="80%", orient="vertical"),
+                    ).set_series_opts(
+                     # 设置 label 显示样式
+                    label_opts=opts.LabelOpts(
+                    formatter="{b}: {c}",
+                    color=Faker.rand_color(),
+                         )
+                         )
+        )
+        pie3 = (
             Pie()
                 .add(
-                series_name="",
-                data_pair=data,
+                "",
+                data3,
                 rosetype="radius",
                 radius=["50%", "70%"],
                 label_opts=opts.LabelOpts(is_show=False, position="center"),
             ).set_global_opts(
                 # 设置图表属性
-                title_opts=opts.TitleOpts(title="饼状图", subtitle="公司股票分析"),
+                title_opts=opts.TitleOpts(title="饼状图", subtitle="公司03日股票分析"),
                 legend_opts=opts.LegendOpts(type_="scroll", pos_left="80%", orient="vertical"),
             ).set_series_opts(
                 # 设置 label 显示样式
@@ -80,7 +130,33 @@ def pie_fun():
                 )
             )
         )
-        return c
+        pie4 = (
+            Pie()
+                .add(
+                "",
+                data4,
+                rosetype="radius",
+                radius=["50%", "70%"],
+                label_opts=opts.LabelOpts(is_show=False, position="center"),
+            ).set_global_opts(
+                # 设置图表属性
+                title_opts=opts.TitleOpts(title="饼状图", subtitle="公司04日股票分析"),
+                legend_opts=opts.LegendOpts(type_="scroll", pos_left="80%", orient="vertical"),
+            ).set_series_opts(
+                # 设置 label 显示样式
+                label_opts=opts.LabelOpts(
+                    formatter="{b}: {c}",
+                    color=Faker.rand_color(),
+                )
+            )
+        )
+        tl.add(pie1, "01日")
+        tl.add(pie2, "02日")
+        tl.add(pie3, "03日")
+        tl.add(pie4, "04日")
+        return tl
+
+
 
 
 def grid_mutil_yaxis():
@@ -156,8 +232,6 @@ def grid_mutil_yaxis():
     )
 
 
-
-
 def tab_fun():
     tab = Tab()
     tab.add(line_bar_fun(), "line")
@@ -173,7 +247,16 @@ if __name__ == "__main__":
     dict_y2 = dict["涨跌幅"]
 
     dict2 = stock_csv.load_date_from_csv("2021-03-02")
+    dict3 = stock_csv.load_date_from_csv("2021-03-03")
+    dict4 = stock_csv.load_date_from_csv("2021-03-04")
+    dict5 = stock_csv.load_date_from_csv("2021-03-05")
     dict_pie1 = dict2[0]
     dict_pie2 = dict2[1]
+    dict_pie3 = dict3[0]
+    dict_pie4 = dict3[1]
+    dict_pie5 = dict4[0]
+    dict_pie6 = dict4[1]
+    dict_pie7 = dict5[0]
+    dict_pie8 = dict5[1]
 
     tab_fun()
