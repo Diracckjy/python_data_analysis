@@ -17,7 +17,6 @@ if __name__ == '__main__':
     # # 从csv文件读出数据
     # data = load_from_csv(stock_name + '.csv')
 
-    # # 生成日数据柱状、折线图
-
-    # # 生成数据饼图
+    # #生成可视化数据图
+    # Init_map
     pass

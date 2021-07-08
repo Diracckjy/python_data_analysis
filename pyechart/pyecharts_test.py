@@ -1,29 +1,13 @@
-﻿
-from pyecharts.faker import Faker;
+﻿from pyecharts.faker import Faker;
 from pyecharts import options as opts;
 from pyecharts.charts import Bar, Grid, Line, Tab, Pie, Timeline
 from pyecharts.globals import ThemeType
 from csv_util import stock_csv
 
-dict_x = []
-dict_y1 = []
-dict_y2 = []
-dict2 = []
-dict3 = []
-dict4 = []
-dict5 = []
-dict_pie1 = []
-dict_pie2 = []
-dict_pie3 = []
-dict_pie4 = []
-dict_pie5 = []
-dict_pie6 = []
-dict_pie7 = []
-dict_pie8 = []
-
 tl = Timeline()
 
-def line_bar_fun():
+
+def line_bar_fun(dict_x, dict_y1, dict_y2):
     c = (
         Line({"theme": ThemeType.MACARONS}).add_xaxis(dict_x
                                                       ).add_yaxis(
@@ -64,102 +48,100 @@ def line_bar_fun():
     return grid
 
 
-def pie_fun():
-        # 数据格式[(key, value), (key, value), ...], 用 zip 函数将两个 list 进行组合
-        data1 = [list(z) for z in zip(dict_pie1, dict_pie2)]
-        data2 = [list(z) for z in zip(dict_pie3, dict_pie4)]
-        data3 = [list(z) for z in zip(dict_pie5, dict_pie6)]
-        data4 = [list(z) for z in zip(dict_pie7, dict_pie8)]
-        pie1 = (
-                Pie()
-                    .add(
-                    "",
-                    data1,
-                    rosetype="radius",
-                    radius=["50%", "70%"],
-                    label_opts=opts.LabelOpts(is_show=False, position="center"),
-                ).set_global_opts(
-                    # 设置图表属性
-                    title_opts=opts.TitleOpts(title="饼状图", subtitle="公司01日股票分析"),
-                    legend_opts=opts.LegendOpts(type_="scroll", pos_left="80%", orient="vertical"),
-                ).set_series_opts(
-                    # 设置 label 显示样式
-                    label_opts=opts.LabelOpts(
-                        formatter="{b}: {c}",
-                        color=Faker.rand_color(),
-                    )
-                )
-            )
-        pie2 = (
-                         Pie()
-                     .add(
-                    "",
-                    data2,
-                    rosetype="radius",
-                    radius=["50%", "70%"],
-                    label_opts=opts.LabelOpts(is_show=False, position="center"),
-                     ).set_global_opts(
-                     # 设置图表属性
-                    title_opts=opts.TitleOpts(title="饼状图", subtitle="公司01日股票分析"),
-                    legend_opts=opts.LegendOpts(type_="scroll", pos_left="80%", orient="vertical"),
-                    ).set_series_opts(
-                     # 设置 label 显示样式
-                    label_opts=opts.LabelOpts(
-                    formatter="{b}: {c}",
-                    color=Faker.rand_color(),
-                         )
-                         )
-        )
-        pie3 = (
-            Pie()
-                .add(
-                "",
-                data3,
-                rosetype="radius",
-                radius=["50%", "70%"],
-                label_opts=opts.LabelOpts(is_show=False, position="center"),
-            ).set_global_opts(
-                # 设置图表属性
-                title_opts=opts.TitleOpts(title="饼状图", subtitle="公司03日股票分析"),
-                legend_opts=opts.LegendOpts(type_="scroll", pos_left="80%", orient="vertical"),
-            ).set_series_opts(
-                # 设置 label 显示样式
-                label_opts=opts.LabelOpts(
-                    formatter="{b}: {c}",
-                    color=Faker.rand_color(),
-                )
+def pie_fun(dict_pie):
+    # 数据格式[(key, value), (key, value), ...], 用 zip 函数将两个 list 进行组合
+    data1 = [list(z) for z in zip(dict_pie[0], dict_pie[1])]
+    data2 = [list(z) for z in zip(dict_pie[2], dict_pie[3])]
+    data3 = [list(z) for z in zip(dict_pie[4], dict_pie[5])]
+    data4 = [list(z) for z in zip(dict_pie[6], dict_pie[7])]
+    pie1 = (
+        Pie()
+            .add(
+            "",
+            data1,
+            rosetype="radius",
+            radius=["50%", "70%"],
+            label_opts=opts.LabelOpts(is_show=False, position="center"),
+        ).set_global_opts(
+            # 设置图表属性
+            title_opts=opts.TitleOpts(title="饼状图", subtitle="公司01日股票分析"),
+            legend_opts=opts.LegendOpts(type_="scroll", pos_left="80%", orient="vertical"),
+        ).set_series_opts(
+            # 设置 label 显示样式
+            label_opts=opts.LabelOpts(
+                formatter="{b}: {c}",
+                color=Faker.rand_color(),
             )
         )
-        pie4 = (
-            Pie()
-                .add(
-                "",
-                data4,
-                rosetype="radius",
-                radius=["50%", "70%"],
-                label_opts=opts.LabelOpts(is_show=False, position="center"),
-            ).set_global_opts(
-                # 设置图表属性
-                title_opts=opts.TitleOpts(title="饼状图", subtitle="公司04日股票分析"),
-                legend_opts=opts.LegendOpts(type_="scroll", pos_left="80%", orient="vertical"),
-            ).set_series_opts(
-                # 设置 label 显示样式
-                label_opts=opts.LabelOpts(
-                    formatter="{b}: {c}",
-                    color=Faker.rand_color(),
-                )
+    )
+    pie2 = (
+        Pie()
+            .add(
+            "",
+            data2,
+            rosetype="radius",
+            radius=["50%", "70%"],
+            label_opts=opts.LabelOpts(is_show=False, position="center"),
+        ).set_global_opts(
+            # 设置图表属性
+            title_opts=opts.TitleOpts(title="饼状图", subtitle="公司01日股票分析"),
+            legend_opts=opts.LegendOpts(type_="scroll", pos_left="80%", orient="vertical"),
+        ).set_series_opts(
+            # 设置 label 显示样式
+            label_opts=opts.LabelOpts(
+                formatter="{b}: {c}",
+                color=Faker.rand_color(),
             )
         )
-        tl.add(pie1, "01日")
-        tl.add(pie2, "02日")
-        tl.add(pie3, "03日")
-        tl.add(pie4, "04日")
-        return tl
+    )
+    pie3 = (
+        Pie()
+            .add(
+            "",
+            data3,
+            rosetype="radius",
+            radius=["50%", "70%"],
+            label_opts=opts.LabelOpts(is_show=False, position="center"),
+        ).set_global_opts(
+            # 设置图表属性
+            title_opts=opts.TitleOpts(title="饼状图", subtitle="公司03日股票分析"),
+            legend_opts=opts.LegendOpts(type_="scroll", pos_left="80%", orient="vertical"),
+        ).set_series_opts(
+            # 设置 label 显示样式
+            label_opts=opts.LabelOpts(
+                formatter="{b}: {c}",
+                color=Faker.rand_color(),
+            )
+        )
+    )
+    pie4 = (
+        Pie()
+            .add(
+            "",
+            data4,
+            rosetype="radius",
+            radius=["50%", "70%"],
+            label_opts=opts.LabelOpts(is_show=False, position="center"),
+        ).set_global_opts(
+            # 设置图表属性
+            title_opts=opts.TitleOpts(title="饼状图", subtitle="公司04日股票分析"),
+            legend_opts=opts.LegendOpts(type_="scroll", pos_left="80%", orient="vertical"),
+        ).set_series_opts(
+            # 设置 label 显示样式
+            label_opts=opts.LabelOpts(
+                formatter="{b}: {c}",
+                color=Faker.rand_color(),
+            )
+        )
+    )
+    tl.add(pie1, "01日")
+    tl.add(pie2, "02日")
+    tl.add(pie3, "03日")
+    tl.add(pie4, "04日")
+    return tl
 
 
-
-
-def grid_mutil_yaxis():
+def grid_mutil_yaxis(dict_x, dict_y1, dict_y2):
     bar = (
         Bar(init_opts=opts.InitOpts(width="1680px", height="800px"))
             .add_xaxis(dict_x)
@@ -232,31 +214,27 @@ def grid_mutil_yaxis():
     )
 
 
-def tab_fun():
+def tab_fun(dictf, dicp):
     tab = Tab()
-    tab.add(line_bar_fun(), "line")
-    tab.add(pie_fun(), "pie")
-    tab.add(grid_mutil_yaxis(), "grid")
+    tab.add(line_bar_fun(dictf[0], dictf[1], dictf[2]), "line")
+    tab.add(pie_fun(dicp), "pie")
+    tab.add(grid_mutil_yaxis(dictf[0], dictf[1], dictf[2]), "grid")
     tab.render("C:/Users/Administrator/Desktop/temp/tab.html")
 
 
+def Init_map():
+    dict_tag = {}
+    dict = stock_csv.load_from_csv("../csv_data/三达膜.csv")
+    dict_tag[0] = dict["日期"]
+    dict_tag[1] = dict["收盘价"]
+    dict_tag[2] = dict["涨跌幅"]
+
+    dict_sumpie = {0: stock_csv.load_date_from_csv("2021-03-02"), 1: stock_csv.load_date_from_csv("2021-03-03"),
+                   2: stock_csv.load_date_from_csv("2021-03-04"), 3: stock_csv.load_date_from_csv("2021-03-05")}
+    dict_pie = {0: dict_sumpie[0][0], 1: dict_sumpie[0][1], 2: dict_sumpie[1][0], 3: dict_sumpie[1][1],
+                4: dict_sumpie[2][0], 5: dict_sumpie[2][1], 6: dict_sumpie[3][0], 7: dict_sumpie[3][1], }
+    tab_fun(dict_tag, dict_pie)
+
+
 if __name__ == "__main__":
-    dict = stock_csv.load_from_csv("../csv_data/三孚新科.csv")
-    dict_x = dict["日期"]
-    dict_y1 = dict["收盘价"]
-    dict_y2 = dict["涨跌幅"]
-
-    dict2 = stock_csv.load_date_from_csv("2021-03-02")
-    dict3 = stock_csv.load_date_from_csv("2021-03-03")
-    dict4 = stock_csv.load_date_from_csv("2021-03-04")
-    dict5 = stock_csv.load_date_from_csv("2021-03-05")
-    dict_pie1 = dict2[0]
-    dict_pie2 = dict2[1]
-    dict_pie3 = dict3[0]
-    dict_pie4 = dict3[1]
-    dict_pie5 = dict4[0]
-    dict_pie6 = dict4[1]
-    dict_pie7 = dict5[0]
-    dict_pie8 = dict5[1]
-
-    tab_fun()
+    Init_map()
