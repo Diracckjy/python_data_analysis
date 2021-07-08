@@ -1,105 +1,185 @@
-﻿import glob
-import random;
+﻿
 from pyecharts.faker import Faker;
 from pyecharts import options as opts;
-from pyecharts.charts import Bar, Grid, Line, Liquid, Tab, Pie, Kline
-from pyecharts.globals import SymbolType
+from pyecharts.charts import Bar, Grid, Line, Tab, Pie, Timeline
 from pyecharts.globals import ThemeType
 from csv_util import stock_csv
 
 dict_x = []
 dict_y1 = []
 dict_y2 = []
+dict2 = []
+dict3 = []
+dict4 = []
+dict5 = []
+dict_pie1 = []
+dict_pie2 = []
+dict_pie3 = []
+dict_pie4 = []
+dict_pie5 = []
+dict_pie6 = []
+dict_pie7 = []
+dict_pie8 = []
 
-def fake_fun():
-    print(Faker.choose());
-    print(Faker.values(1, 100));
-    print(Faker.rand_color());
-    print(list(z for z in zip(Faker.choose(), Faker.values(1, 100))));
-    print(list((x, y, random.randint(1, 100)) for x in range(1, 10) for y in range(1, 10)));
+tl = Timeline()
 
-
-def line_fun():
+def line_bar_fun():
     c = (
-        Line().add_xaxis(dict_x
-                         ).add_yaxis(
-
-            "线1", Faker.values(1, 100), itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color()),
-            markpoint_opts=opts.MarkPointOpts(data=[opts.MarkPointItem(type_="max")])
+        Line({"theme": ThemeType.MACARONS}).add_xaxis(dict_x
+                                                      ).add_yaxis(
+            "收盘价", dict_y1, itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color()),
+            markpoint_opts=opts.MarkPointOpts(data=[opts.MarkPointItem(type_="max")]),
+            areastyle_opts=opts.AreaStyleOpts(opacity=0.5),
+            is_smooth=True
         ).add_yaxis(
 
-            "线2", Faker.values(1, 100), itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color()),
-            markpoint_opts=opts.MarkPointOpts(data=[opts.MarkPointItem(type_="max")])
+            "涨跌幅", dict_y2, itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color()),
+            markpoint_opts=opts.MarkPointOpts(data=[opts.MarkPointItem(type_="max")]),
+            areastyle_opts=opts.AreaStyleOpts(opacity=0.5),
+            is_smooth=True
         ).set_global_opts(
-
-            title_opts=opts.TitleOpts(title="stock", subtitle="linemap")
+            datazoom_opts=[opts.DataZoomOpts(type_="inside")],
+            title_opts=opts.TitleOpts(title="线状-柱状图", subtitle="公司股票分析")
         )
-
     )
-    return c
-
-
-def bar_fun():
-    c = (
+    b = (
         Bar({"theme": ThemeType.MACARONS}).add_xaxis(dict_x
                                                      ).add_yaxis(
             # 添加 y 轴数据，并设置属性
-            "柱1", dict["日期"], itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color())
+            "收盘价", dict_y1, itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color())
         ).add_yaxis(
             # 添加 y 轴数据，并设置属性
-            "柱2", Faker.values(1, 100), itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color())
+            "涨跌幅", dict_y2, itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color())
         ).set_global_opts(
             # 设置图表属性
-            title_opts=opts.TitleOpts(title="主标题", subtitle="副标题"),
-            datazoom_opts=[opts.DataZoomOpts()],
+            datazoom_opts=[opts.DataZoomOpts(type_="inside")],
         )
     )
-    return c
+    grid = (
+        Grid()
+            .add(c, grid_opts=opts.GridOpts(pos_bottom="60%"))
+            .add(b, grid_opts=opts.GridOpts(pos_top="60%"))
+
+    )
+    return grid
 
 
 def pie_fun():
-    # 数据格式[(key, value), (key, value), ...], 用 zip 函数将两个 list 进行组合
-    data = [list(z) for z in zip(Faker.choose(), Faker.values())];
-    c = (
-        Pie().add(
-            series_name="",
-            data_pair=data,
-            rosetype="radius",
-        ).set_global_opts(
-            # 设置图表属性
-            title_opts=opts.TitleOpts(title="主标题", subtitle="副标题")
-        ).set_series_opts(
-            # 设置 label 显示样式
-            label_opts=opts.LabelOpts(
-                formatter="{b}: {c}",
-                color=Faker.rand_color(),
+        # 数据格式[(key, value), (key, value), ...], 用 zip 函数将两个 list 进行组合
+        data1 = [list(z) for z in zip(dict_pie1, dict_pie2)]
+        data2 = [list(z) for z in zip(dict_pie3, dict_pie4)]
+        data3 = [list(z) for z in zip(dict_pie5, dict_pie6)]
+        data4 = [list(z) for z in zip(dict_pie7, dict_pie8)]
+        pie1 = (
+                Pie()
+                    .add(
+                    "",
+                    data1,
+                    rosetype="radius",
+                    radius=["50%", "70%"],
+                    label_opts=opts.LabelOpts(is_show=False, position="center"),
+                ).set_global_opts(
+                    # 设置图表属性
+                    title_opts=opts.TitleOpts(title="饼状图", subtitle="公司01日股票分析"),
+                    legend_opts=opts.LegendOpts(type_="scroll", pos_left="80%", orient="vertical"),
+                ).set_series_opts(
+                    # 设置 label 显示样式
+                    label_opts=opts.LabelOpts(
+                        formatter="{b}: {c}",
+                        color=Faker.rand_color(),
+                    )
+                )
+            )
+        pie2 = (
+                         Pie()
+                     .add(
+                    "",
+                    data2,
+                    rosetype="radius",
+                    radius=["50%", "70%"],
+                    label_opts=opts.LabelOpts(is_show=False, position="center"),
+                     ).set_global_opts(
+                     # 设置图表属性
+                    title_opts=opts.TitleOpts(title="饼状图", subtitle="公司01日股票分析"),
+                    legend_opts=opts.LegendOpts(type_="scroll", pos_left="80%", orient="vertical"),
+                    ).set_series_opts(
+                     # 设置 label 显示样式
+                    label_opts=opts.LabelOpts(
+                    formatter="{b}: {c}",
+                    color=Faker.rand_color(),
+                         )
+                         )
+        )
+        pie3 = (
+            Pie()
+                .add(
+                "",
+                data3,
+                rosetype="radius",
+                radius=["50%", "70%"],
+                label_opts=opts.LabelOpts(is_show=False, position="center"),
+            ).set_global_opts(
+                # 设置图表属性
+                title_opts=opts.TitleOpts(title="饼状图", subtitle="公司03日股票分析"),
+                legend_opts=opts.LegendOpts(type_="scroll", pos_left="80%", orient="vertical"),
+            ).set_series_opts(
+                # 设置 label 显示样式
+                label_opts=opts.LabelOpts(
+                    formatter="{b}: {c}",
+                    color=Faker.rand_color(),
+                )
             )
         )
-    )
-    return c
+        pie4 = (
+            Pie()
+                .add(
+                "",
+                data4,
+                rosetype="radius",
+                radius=["50%", "70%"],
+                label_opts=opts.LabelOpts(is_show=False, position="center"),
+            ).set_global_opts(
+                # 设置图表属性
+                title_opts=opts.TitleOpts(title="饼状图", subtitle="公司04日股票分析"),
+                legend_opts=opts.LegendOpts(type_="scroll", pos_left="80%", orient="vertical"),
+            ).set_series_opts(
+                # 设置 label 显示样式
+                label_opts=opts.LabelOpts(
+                    formatter="{b}: {c}",
+                    color=Faker.rand_color(),
+                )
+            )
+        )
+        tl.add(pie1, "01日")
+        tl.add(pie2, "02日")
+        tl.add(pie3, "03日")
+        tl.add(pie4, "04日")
+        return tl
+
+
 
 
 def grid_mutil_yaxis():
     bar = (
-        Bar()
+        Bar(init_opts=opts.InitOpts(width="1680px", height="800px"))
             .add_xaxis(dict_x)
             .add_yaxis(
             "收盘价",
             dict_y1, category_gap="0%", itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color()),
-            yaxis_index=0,
+            yaxis_index=1,
         )
             .add_yaxis(
             "涨跌幅",
             dict_y2, category_gap="0%", itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color()),
-            yaxis_index=0,
+            yaxis_index=2,
         )
             .extend_axis(
             yaxis=opts.AxisOpts(
                 name="收盘价",
                 type_="value",
-                min_=-300,
-                max_=300,
                 position="right",
+                max_=270,
+                min_=-200,
                 axisline_opts=opts.AxisLineOpts(
                     linestyle_opts=opts.LineStyleOpts(color=Faker.rand_color())
                 ),
@@ -110,10 +190,10 @@ def grid_mutil_yaxis():
             yaxis=opts.AxisOpts(
                 name="涨跌幅",
                 type_="value",
-                min_=-300,
-                max_=300,
                 position="right",
                 offset=80,
+                max_=20,
+                min_=-20,
                 axisline_opts=opts.AxisLineOpts(
                     linestyle_opts=opts.LineStyleOpts(color=Faker.rand_color())
                 ),
@@ -137,11 +217,12 @@ def grid_mutil_yaxis():
         Line()
             .add_xaxis(dict_x)
             .add_yaxis(
-            "收盘价趋势",
+            "跌涨幅趋势",
             dict_y1, itemstyle_opts=opts.ItemStyleOpts(color=Faker.rand_color()),
             markpoint_opts=opts.MarkPointOpts(data=[opts.MarkPointItem(type_="min"), opts.MarkPointItem(type_="max")]),
             yaxis_index=0,
             label_opts=opts.LabelOpts(is_show=False),
+            is_smooth=True
         )
     )
 
@@ -151,102 +232,31 @@ def grid_mutil_yaxis():
     )
 
 
-def liquid_fun():
-    c = (
-        Liquid()
-            .add("lq", [0.3, 0.7], is_outline_show=False, shape=SymbolType.ARROW)
-            .set_global_opts(title_opts=opts.TitleOpts(title="Liquid-Shape-arrow"))
-    )
-    return c
-
-
-def dataset_fun():
-    c = (
-        Pie()
-            .add_dataset(
-            source=[
-                ["product", "2012", "2013", "2014", "2015", "2016", "2017"],
-                ["Matcha Latte", 41.1, 30.4, 65.1, 53.3, 83.8, 98.7],
-                ["Milk Tea", 86.5, 92.1, 85.7, 83.1, 73.4, 55.1],
-                ["Cheese Cocoa", 24.1, 67.2, 79.5, 86.4, 65.2, 82.5],
-                ["Walnut Brownie", 55.2, 67.1, 69.2, 72.4, 53.9, 39.1],
-            ]
-        )
-            .add(
-            series_name="Matcha Latte",
-            data_pair=[],
-            radius=60,
-            center=["25%", "30%"],
-            encode={"itemName": "product", "value": "2012"},
-            rosetype="radius",
-        )
-            .add(
-            series_name="Milk Tea",
-            data_pair=[],
-            radius=60,
-            center=["75%", "30%"],
-            encode={"itemName": "product", "value": "2013"},
-            rosetype="radius",
-        )
-            .add(
-            series_name="Cheese Cocoa",
-            data_pair=[],
-            radius=60,
-            center=["25%", "75%"],
-            encode={"itemName": "product", "value": "2014"},
-            rosetype="area",
-        )
-            .add(
-            series_name="Walnut Brownie",
-            data_pair=[],
-            radius=60,
-            center=["75%", "75%"],
-            encode={"itemName": "product", "value": "2015"},
-            rosetype="area",
-        )
-            .set_global_opts(
-            title_opts=opts.TitleOpts(title="Dataset simple pie example"),
-            legend_opts=opts.LegendOpts(pos_left="30%", pos_top="2%"),
-        )
-    )
-    return c
-
-
-def kmap_fun():
-    c = (
-        Kline()
-            .add_xaxis(["2017/7/{}".format(i + 1) for i in range(31)])
-            .add_yaxis("kline", )
-            .set_global_opts(
-            xaxis_opts=opts.AxisOpts(is_scale=True),
-            yaxis_opts=opts.AxisOpts(
-                is_scale=True,
-                splitarea_opts=opts.SplitAreaOpts(
-                    is_show=True, areastyle_opts=opts.AreaStyleOpts(opacity=1)
-                ),
-            ),
-            datazoom_opts=[opts.DataZoomOpts()],
-            title_opts=opts.TitleOpts(title="Kline-DataZoom-slider"),
-        )
-    )
-    return c
-
-
 def tab_fun():
     tab = Tab()
-    tab.add(bar_fun(), "bar")
-    tab.add(line_fun(), "line")
+    tab.add(line_bar_fun(), "line")
     tab.add(pie_fun(), "pie")
     tab.add(grid_mutil_yaxis(), "grid")
-    tab.add(dataset_fun(), "dataset")
-    tab.add(liquid_fun(), "liquidmap")
-    # tab.add(kmap_fun(),"k-line")
     tab.render("C:/Users/Administrator/Desktop/temp/tab.html")
 
 
 if __name__ == "__main__":
-    dict = stock_csv.load_from_csv("三孚新科.csv")
+    dict = stock_csv.load_from_csv("../csv_data/三孚新科.csv")
     dict_x = dict["日期"]
     dict_y1 = dict["收盘价"]
     dict_y2 = dict["涨跌幅"]
+
+    dict2 = stock_csv.load_date_from_csv("2021-03-02")
+    dict3 = stock_csv.load_date_from_csv("2021-03-03")
+    dict4 = stock_csv.load_date_from_csv("2021-03-04")
+    dict5 = stock_csv.load_date_from_csv("2021-03-05")
+    dict_pie1 = dict2[0]
+    dict_pie2 = dict2[1]
+    dict_pie3 = dict3[0]
+    dict_pie4 = dict3[1]
+    dict_pie5 = dict4[0]
+    dict_pie6 = dict4[1]
+    dict_pie7 = dict5[0]
+    dict_pie8 = dict5[1]
+
     tab_fun()
