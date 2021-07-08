@@ -23,7 +23,7 @@ def line_bar_fun(dict_x, dict_y1, dict_y2):
             is_smooth=True
         ).set_global_opts(
             datazoom_opts=[opts.DataZoomOpts(type_="inside")],
-            title_opts=opts.TitleOpts(title="线状-柱状图", subtitle="公司股票分析")
+            title_opts=opts.TitleOpts(title="线状-柱状图", subtitle="三孚新科公司股票分析")
         )
     )
     b = (
@@ -64,7 +64,7 @@ def pie_fun(dict_pie):
             label_opts=opts.LabelOpts(is_show=False, position="center"),
         ).set_global_opts(
             # 设置图表属性
-            title_opts=opts.TitleOpts(title="饼状图", subtitle="公司01日股票分析"),
+            title_opts=opts.TitleOpts(title="饼状图", subtitle="三孚新科公司01日股票分析"),
             legend_opts=opts.LegendOpts(type_="scroll", pos_left="80%", orient="vertical"),
         ).set_series_opts(
             # 设置 label 显示样式
@@ -84,7 +84,7 @@ def pie_fun(dict_pie):
             label_opts=opts.LabelOpts(is_show=False, position="center"),
         ).set_global_opts(
             # 设置图表属性
-            title_opts=opts.TitleOpts(title="饼状图", subtitle="公司01日股票分析"),
+            title_opts=opts.TitleOpts(title="饼状图", subtitle="三孚新科公司01日股票分析"),
             legend_opts=opts.LegendOpts(type_="scroll", pos_left="80%", orient="vertical"),
         ).set_series_opts(
             # 设置 label 显示样式
@@ -104,7 +104,7 @@ def pie_fun(dict_pie):
             label_opts=opts.LabelOpts(is_show=False, position="center"),
         ).set_global_opts(
             # 设置图表属性
-            title_opts=opts.TitleOpts(title="饼状图", subtitle="公司03日股票分析"),
+            title_opts=opts.TitleOpts(title="饼状图", subtitle="三孚新科公司03日股票分析"),
             legend_opts=opts.LegendOpts(type_="scroll", pos_left="80%", orient="vertical"),
         ).set_series_opts(
             # 设置 label 显示样式
@@ -124,7 +124,7 @@ def pie_fun(dict_pie):
             label_opts=opts.LabelOpts(is_show=False, position="center"),
         ).set_global_opts(
             # 设置图表属性
-            title_opts=opts.TitleOpts(title="饼状图", subtitle="公司04日股票分析"),
+            title_opts=opts.TitleOpts(title="饼状图", subtitle="三孚新科公司04日股票分析"),
             legend_opts=opts.LegendOpts(type_="scroll", pos_left="80%", orient="vertical"),
         ).set_series_opts(
             # 设置 label 显示样式
@@ -219,7 +219,7 @@ def tab_fun(dictf, dicp):
     tab.add(line_bar_fun(dictf[0], dictf[1], dictf[2]), "line")
     tab.add(pie_fun(dicp), "pie")
     tab.add(grid_mutil_yaxis(dictf[0], dictf[1], dictf[2]), "grid")
-    tab.render("C:/Users/Administrator/Desktop/temp/tab.html")
+    tab.render("tab.html")
 
 
 def Init_map():
