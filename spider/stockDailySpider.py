@@ -16,7 +16,7 @@ class stockDailySpider():
         secid = self.getSecid(self.name)
         if secid is None:
             print('没有该公司数据')
-            return None
+            return None, None
         else:
             print('该公司secid为：' + str(secid[0]))
             return self.name, self.parse(secid[0])

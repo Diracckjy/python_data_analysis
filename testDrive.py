@@ -13,6 +13,8 @@ if __name__ == '__main__':
 
     # 爬取数据
     stock_name, row_day_data = spider.run()
+    if stock_name is None:
+        exit(0)
 
     # 数据预处理
     day_data = pre_processing_data(row_day_data)
