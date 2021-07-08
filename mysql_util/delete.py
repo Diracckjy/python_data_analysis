@@ -1,10 +1,9 @@
-from connect import get_conn
+from mysql_util.pyConnect import get_conn
 
 def delete(sql,args):
     conn = get_conn()
     cur = conn.cursor()
     result = cur.execute(sql,args)
-    print(result)
     conn.commit()
     cur.close()
     conn.close()

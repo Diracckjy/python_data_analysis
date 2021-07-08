@@ -1,4 +1,4 @@
-from connect import get_conn
+from mysql_util.pyConnect import get_conn
 
 def search(sql,args):
     conn = get_conn()

@@ -1,4 +1,4 @@
-from connect import get_conn
+from mysql_util.pyConnect import get_conn
 from datetime import datetime
 
 
@@ -6,7 +6,6 @@ def insert(sql):
     conn = get_conn()
     cur = conn.cursor()
     result = cur.execute(sql)
-    print(result)
     conn.commit()
     cur.close()
     conn.close()

@@ -1,6 +1,7 @@
 from pyechart.pyecharts_test import Init_map
 from csv_util.stock_csv import pre_processing_data, save_data_in_csv, load_from_csv
 from spider.stockDailySpider import stockDailySpider
+from mysql_util.insert_stock import create_stock_day_data_table
 import os
 
 # 主测试函数
@@ -23,6 +24,7 @@ if __name__ == '__main__':
     save_data_in_csv(day_data, tag, stock_name, base_folder)
 
     # 将数据存入mysql
+    create_stock_day_data_table(day_data, stock_name)
 
     # 从csv文件读出数据
     # data = load_from_csv(stock_name + '.csv')
