@@ -27,9 +27,9 @@ def save_multi_data_in_csv(all_data=None):
         save_data_in_csv(data, tag, data_dict['name'])
 
 
-# 预处理股票日数据
-# 输入一个list
-# 返回一个list
+# 预处理股票日数据, 取出日期, 收盘价和涨跌幅，舍弃无效数据
+# 输入一个原始数据list
+# 返回一个包含日期, 收盘价和涨跌幅的数据list
 def pre_processing_data(row_data=None):
     if not row_data:
         return
@@ -52,7 +52,7 @@ def pre_processing_data(row_data=None):
 
 
 # 将股票日数据存入csv文件
-# 输入list数据, 标签list, 字符串股票名
+# 输入数据list, 标签list(日期, 收盘价和涨跌幅), 字符串股票名
 # 无返回值
 def save_data_in_csv(all_data=None, tag=None, stock_name=None):
     if not all_data or not tag or not stock_name:
@@ -65,7 +65,7 @@ def save_data_in_csv(all_data=None, tag=None, stock_name=None):
 
 # 从csv文件读出股票日数据
 # 输入文件名
-# 返回一个字典
+# 返回一个字典，key为字段名, value为对应字段的列值
 def load_from_csv(csv_file=None):
     if not csv_file:
         return
@@ -76,7 +76,7 @@ def load_from_csv(csv_file=None):
     return data
 
 
-# 按日期取出csv_data文件夹中所有公司改日股票数据
+# 按日期取出csv_data文件夹中所有公司该日股票数据
 # 输入日期格式YYYY-MM-DD
 # 返回两个list，一个公司名称list，一个收盘价list
 def load_date_from_csv(date=None):
@@ -101,11 +101,12 @@ def load_date_from_csv(date=None):
 if __name__ == '__main__':
     day_tag = ['日期', '收盘价', '涨跌幅']
     date = '2021-07-07'
-    # spider = stockDailySpider()
-    # # 爬取数据
-    # stock_name, row_day_data = spider.run()
-    # # 数据预处理
-    # day_data = pre_processing_data(row_day_data)
+    spider = stockDailySpider()
+    # 爬取数据
+    stock_name, row_day_data = spider.run()
+    # 数据预处理
+    day_data = pre_processing_data(row_day_data)
+    print(day_data)
     # # 将数据存入csv文件
     # save_data_in_csv(day_data, day_tag, stock_name)
     # # 从csv文件读出数据
@@ -114,8 +115,8 @@ if __name__ == '__main__':
     # load_date_from_csv(date)
 
     # 同时爬取多个公司数据
-    spider = stockGetDays()
-    all_data = spider.run()
-    save_multi_data_in_csv(all_data)
+    # spider = stockGetDays()
+    # all_data = spider.run()
+    # save_multi_data_in_csv(all_data)
 
 
