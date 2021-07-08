@@ -1,3 +1,4 @@
+from pyechart.pyecharts_test import Init_map
 from csv_util.stock_csv import pre_processing_data, save_data_in_csv, load_from_csv
 from spider.stockDailySpider import stockDailySpider
 import os
@@ -24,7 +25,6 @@ if __name__ == '__main__':
     # 从csv文件读出数据
     # data = load_from_csv(stock_name + '.csv')
 
-    # 生成日数据柱状、折线图
-
-    # 生成数据饼图
-    pass
+    # 生成日数据柱状、折线图和生成数据饼图
+    csv_file = base_folder + stock_name + '.csv'
+    Init_map(csv_file, base_folder, stock_name)

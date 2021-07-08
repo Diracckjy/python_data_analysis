@@ -83,15 +83,15 @@ def load_from_csv(csv_file=None):
 # 按日期取出csv_data文件夹中所有公司该日股票数据
 # 输入日期格式YYYY-MM-DD
 # 返回两个list，一个公司名称list，一个收盘价list
-def load_date_from_csv(date=None):
-    if not date:
+def load_date_from_csv(date=None, base_folder=None):
+    if not date or not base_folder:
         return
-    files = listdir('../csv_data')      # 列出文件夹中所有文件
+    files = listdir(base_folder)      # 列出文件夹中所有文件
     cop_list, price_list = [], []
     for file in files:
         # print(file.split('.'))
         cop_list.append(file.split('.')[0])
-        csv_data = pd.read_csv('../csv_data/'+file, index_col=0)
+        csv_data = pd.read_csv(base_folder+file, index_col=0)
         l = csv_data.values.tolist()
         for item in l:
             if date in item:

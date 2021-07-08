@@ -7,7 +7,7 @@ from csv_util import stock_csv
 tl = Timeline()
 
 
-def line_bar_fun(dict_x, dict_y1, dict_y2):
+def line_bar_fun(dict_x, dict_y1, dict_y2, stock_name):
     c = (
         Line({"theme": ThemeType.MACARONS}).add_xaxis(dict_x
                                                       ).add_yaxis(
@@ -23,7 +23,7 @@ def line_bar_fun(dict_x, dict_y1, dict_y2):
             is_smooth=True
         ).set_global_opts(
             datazoom_opts=[opts.DataZoomOpts(type_="inside")],
-            title_opts=opts.TitleOpts(title="线状-柱状图", subtitle="公司股票分析")
+            title_opts=opts.TitleOpts(title="线状-柱状图", subtitle=stock_name+"公司股票分析")
         )
     )
     b = (
@@ -141,7 +141,7 @@ def pie_fun(dict_pie):
     return tl
 
 
-def grid_mutil_yaxis(dict_x, dict_y1, dict_y2):
+def grid_mutil_yaxis(dict_x, dict_y1, dict_y2, stock_name):
     bar = (
         Bar(init_opts=opts.InitOpts(width="1680px", height="800px"))
             .add_xaxis(dict_x)
@@ -186,7 +186,7 @@ def grid_mutil_yaxis(dict_x, dict_y1, dict_y2):
             )
         )
             .set_global_opts(
-            title_opts=opts.TitleOpts(title="Grid综合图-三孚新科当日股票走势"),
+            title_opts=opts.TitleOpts(title="Grid综合图-"+stock_name+"当日股票走势"),
             tooltip_opts=opts.TooltipOpts(trigger="axis", axis_pointer_type="cross"),
             datazoom_opts=[opts.DataZoomOpts(), opts.DataZoomOpts(orient="vertical")],
             toolbox_opts=opts.ToolboxOpts(pos_left="820"),
@@ -214,27 +214,30 @@ def grid_mutil_yaxis(dict_x, dict_y1, dict_y2):
     )
 
 
-def tab_fun(dictf, dicp):
+def tab_fun(dictf, dicp, stock_name):
     tab = Tab()
-    tab.add(line_bar_fun(dictf[0], dictf[1], dictf[2]), "line")
+    tab.add(line_bar_fun(dictf[0], dictf[1], dictf[2], stock_name), "line")
     tab.add(pie_fun(dicp), "pie")
-    tab.add(grid_mutil_yaxis(dictf[0], dictf[1], dictf[2]), "grid")
-    tab.render("C:/Users/Administrator/Desktop/temp/tab.html")
+    tab.add(grid_mutil_yaxis(dictf[0], dictf[1], dictf[2], stock_name), "grid")
+    tab.render("tab.html")
 
 
-def Init_map():
+def Init_map(csv_file, base_folder, stock_name):
     dict_tag = {}
-    dict = stock_csv.load_from_csv("../csv_data/三达膜.csv")
+    dict = stock_csv.load_from_csv(csv_file)
     dict_tag[0] = dict["日期"]
     dict_tag[1] = dict["收盘价"]
     dict_tag[2] = dict["涨跌幅"]
 
-    dict_sumpie = {0: stock_csv.load_date_from_csv("2021-03-02"), 1: stock_csv.load_date_from_csv("2021-03-03"),
-                   2: stock_csv.load_date_from_csv("2021-03-04"), 3: stock_csv.load_date_from_csv("2021-03-05")}
+    dict_sumpie = {0: stock_csv.load_date_from_csv("2021-03-02", base_folder),
+                   1: stock_csv.load_date_from_csv("2021-03-03", base_folder),
+                   2: stock_csv.load_date_from_csv("2021-03-04", base_folder),
+                   3: stock_csv.load_date_from_csv("2021-03-05", base_folder)}
     dict_pie = {0: dict_sumpie[0][0], 1: dict_sumpie[0][1], 2: dict_sumpie[1][0], 3: dict_sumpie[1][1],
                 4: dict_sumpie[2][0], 5: dict_sumpie[2][1], 6: dict_sumpie[3][0], 7: dict_sumpie[3][1], }
-    tab_fun(dict_tag, dict_pie)
+    tab_fun(dict_tag, dict_pie, stock_name)
 
 
 if __name__ == "__main__":
-    Init_map()
+    csv_file = '../csv_data/三达膜.csv'
+    Init_map(csv_file)
