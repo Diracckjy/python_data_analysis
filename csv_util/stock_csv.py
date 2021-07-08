@@ -14,6 +14,7 @@ import pandas as pd
 from spider.stockDailySpider import stockDailySpider
 from spider.stockGetDays import stockGetDays
 from os import listdir
+import os
 
 
 # 预处理并存取多个股票数据
@@ -54,11 +55,14 @@ def pre_processing_data(row_data=None):
 # 将股票日数据存入csv文件
 # 输入数据list, 标签list(日期, 收盘价和涨跌幅), 字符串股票名
 # 无返回值
-def save_data_in_csv(all_data=None, tag=None, stock_name=None):
-    if not all_data or not tag or not stock_name:
+def save_data_in_csv(all_data=None, tag=None, stock_name=None, base_folder=None):
+    if not all_data or not tag or not stock_name or not base_folder:
         return
 
-    csv_file = '../csv_data/%s.csv' % stock_name
+    # csv_file = '../csv_data/%s.csv' % stock_name
+    csv_file = base_folder + '%s.csv' % stock_name
+    # print(os.getcwd())
+    # print(os.path.exists(base_folder + '%s.csv'))
     df = DataFrame(data=all_data, columns=tag)
     df.to_csv(path_or_buf=csv_file, encoding='utf-8', index_label=False)
 
@@ -101,14 +105,14 @@ def load_date_from_csv(date=None):
 if __name__ == '__main__':
     day_tag = ['日期', '收盘价', '涨跌幅']
     date = '2021-07-07'
+    base_folder = './csv_data/'
     spider = stockDailySpider()
     # 爬取数据
     stock_name, row_day_data = spider.run()
     # 数据预处理
     day_data = pre_processing_data(row_day_data)
-    print(day_data)
-    # # 将数据存入csv文件
-    # save_data_in_csv(day_data, day_tag, stock_name)
+    # 将数据存入csv文件
+    save_data_in_csv(day_data, day_tag, stock_name, base_folder)
     # # 从csv文件读出数据
     # data = load_from_csv(stock_name + '.csv')
 
