@@ -1,20 +1,18 @@
-from mysql_util.pyConnect import get_conn
-from mysql_util.insert import insert
-from mysql_util.create_stock_table import create_stock_table
+from mysql_util.execute import _execute
 
 
 def create_stock_day_data_table(all_data, stock_name):
     sql = "DROP TABLE IF EXISTS " + stock_name
-    create_stock_table(sql)
+    _execute(sql)
 
     sql = "CREATE TABLE `%s` (date date PRIMARY KEY  ,rise_and_fall  varchar (255) , ending_price float )" % (
         stock_name)
-    create_stock_table(sql)
+    _execute(sql)
 
     for item in all_data:
         sql = "insert into %s (date ,rise_and_fall , ending_price) " \
-              "values ('%s', '%s', '%s')" % (stock_name, item[0], item[2], item[1]);
-        insert(sql)
+              "values ('%s', '%s', '%s')" % (stock_name, item[0], item[2], item[1])
+        _execute(sql)
 
 
 if __name__ == '__main__':
