@@ -1,8 +1,5 @@
-import pymysql
+from connect import get_conn
 #连接数据库
-def get_conn():
-    conn = pymysql.connect(host='localhost',port=3306,user='root',passwd='123456',db='test')
-    return conn
 
 def create_stock_table(sql):
     conn = get_conn()
@@ -14,6 +11,6 @@ def create_stock_table(sql):
     conn.close()
 
 if __name__ == '__main__':
-    sql = "CREATE TABLE stock (name varchar(255) PRIMARY KEY  ,create_date date  ,rise_and_fall  varchar (255) , ending_price float )" ;
+    sql = "CREATE TABLE stock (name varchar(255) PRIMARY KEY  ,create_date date  ,rise_and_fall  varchar (255) , ending_price float )"
 
     create_stock_table(sql)

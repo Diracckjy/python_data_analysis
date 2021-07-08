@@ -1,8 +1,4 @@
-import pymysql
-
-def get_conn():
-    conn = pymysql.connect(host='localhost',port=3306,user='root',passwd='123456',db='test')
-    return conn
+from connect import get_conn
 
 def renew(sql,args):
     conn = get_conn()
@@ -15,6 +11,6 @@ def renew(sql,args):
 
 
 if __name__ == '__main__':
-    sql = 'UPDATE  kg_python_user SET value=%s WHERE id = %s;'
+    sql = 'UPDATE  stockinfo SET name=%s WHERE id = %s;'
     args = ('150', 1)
     renew(sql, args)

@@ -1,9 +1,5 @@
-import pymysql
-from create_stock_table.create_stock_table import create_stock_table
-
-def get_conn():
-    conn = pymysql.connect(host='localhost',port=3306,user='root',passwd='123456',db='test')
-    return conn
+from connect import get_conn
+from create_stock_table import create_stock_table
 
 def insert(sql):
     conn = get_conn()
@@ -15,7 +11,7 @@ def insert(sql):
     conn.close()
 
 def create_stock_day_data_table(all_data, stock_name):
-    sql = "CREATE TABLE %s (date date PRIMARY KEY  ,rise_and_fall  varchar (255) , ending_price float )" % stock_name;
+    sql = "CREATE TABLE %s (date date PRIMARY KEY  ,rise_and_fall  varchar (255) , ending_price float )" % stock_name
     create_stock_table(sql)
 
     for item in all_data:

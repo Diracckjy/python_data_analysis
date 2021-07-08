@@ -1,9 +1,6 @@
-import pymysql
-from datetime import datetime;
+from connect import get_conn
+from datetime import datetime
 
-def get_conn():
-    conn = pymysql.connect(host='localhost',port=3306,user='root',passwd='123456',db='test')
-    return conn
 
 def insert(sql):
     conn = get_conn()
@@ -15,7 +12,7 @@ def insert(sql):
     conn.close()
 
 if __name__ == '__main__':
-    sql = "insert into kg_python_user (name,value, create_date) " \
+    sql = "insert into stockinfo (name,id, secid) " \
           "values ('%s','%s', '%s')" % ("uuu", "9", datetime.now().strftime("%Y-%m-%d %H:%M:%S"));
 
     insert(sql)
